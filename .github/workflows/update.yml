@@ -1,0 +1,22 @@
+name: Update PHL7 Cross-Training Script
+on:
+  schedule:
+    - cron: '0 10 * * 1,3,5'
+  workflow_dispatch: {}
+
+jobs:
+  update-script:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install openpyxl requests
+      - name: Rebuild and push script
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          SP_CLIENT_ID: placeholder
+          SP_CLIENT_SECRET: placeholder
+          GIST_ID: '10ce3065265ca98f2470b00235db1731'
+        run: python update_script.py
